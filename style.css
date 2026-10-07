@@ -1,0 +1,52 @@
+:root{--fs:18px;--bg:#eef2ef;--ink:#12262b;--pri:#0f5c4d;--acc:#f0a202;--line:#b9c9c1;--bad:#b3261e}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:var(--fs)/1.5 "Atkinson Hyperlegible",system-ui,"Noto Sans",sans-serif}
+body.big{--fs:22px}
+header{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--pri);color:#fff}
+.brand{font-weight:700;font-size:1.5rem}
+.brand b{color:var(--acc)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+button,select,input{font:inherit;min-height:52px;border-radius:10px;border:2px solid var(--line);padding:6px 14px;background:#fff;color:var(--ink)}
+button{cursor:pointer;font-weight:700}
+.tools button,.tools select{min-height:44px}
+nav{display:flex;background:#fff;border-bottom:2px solid var(--line)}
+nav button{flex:1;border:0;border-radius:0;background:none;border-bottom:4px solid transparent}
+nav button.on{border-bottom-color:var(--acc)}
+main{max-width:760px;margin:0 auto;padding:18px 16px 100px}
+h1{font-size:1.7rem;line-height:1.2;margin:.4em 0}
+h2{font-size:1.25rem;margin:1.2em 0 .4em}
+label{display:block;font-weight:700;margin:12px 0}
+select,input:not([type=checkbox]){width:100%;display:block;margin-top:4px}
+details{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
+summary{font-weight:700;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.card{background:#fff;border:2px solid var(--line);border-radius:14px;padding:14px;text-align:left}
+.card .ic{display:block;font-size:2rem}
+.card.on{border-color:var(--pri);box-shadow:inset 0 0 0 2px var(--pri)}
+.primary{background:var(--pri);color:#fff;border-color:var(--pri);width:100%;margin-top:12px}
+.warn{background:var(--acc);border-color:var(--acc);color:var(--ink)}
+.panelbox{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:6px 16px 16px;margin-top:18px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin:12px 0}
+.stats div{background:var(--bg);border-radius:12px;padding:10px;text-align:center;font-size:.85rem}
+.stats strong{display:block;font-size:1.6rem}
+.demo{font-size:.85rem;color:#55666a}
+.chk{display:flex;gap:10px;align-items:flex-start;font-weight:400}
+.chk input{min-height:auto;width:24px;height:24px}
+.ticket{display:flex;background:#fff;border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.ticket .no{display:flex;align-items:center;padding:18px;background:var(--acc);border-right:4px dashed var(--ink);font-size:2.2rem;font-weight:700}
+.ticket .tx{padding:14px}
+.banner{margin:12px 0;padding:14px;border-radius:12px;background:var(--bad);color:#fff;font-weight:700}
+.err{color:var(--bad);font-weight:700}
+footer{padding:20px;text-align:center;font-size:.85rem;color:#55666a}
+#bot{position:fixed;right:14px;bottom:14px;z-index:5;max-width:calc(100% - 28px)}
+#bot .fab{display:block;margin-left:auto;width:56px;height:56px;padding:0;border-radius:50%;background:var(--pri);border-color:var(--pri);font-size:1.5rem}
+#panel{margin:0 0 10px;width:300px;max-width:100%}
+.bots{display:grid;gap:8px;margin-top:8px}
+.bots .card{min-height:44px;padding:8px 12px}
+:focus-visible{outline:3px solid #1b5fd1;outline-offset:2px}
+@media(prefers-reduced-motion:no-preference){.banner{animation:p 1.4s 3}@keyframes p{50%{opacity:.6}}}
+
+body{background-image:url(assets/background.jpg)}
+.brand{display:flex;align-items:center;gap:10px}
+.hero{display:block}

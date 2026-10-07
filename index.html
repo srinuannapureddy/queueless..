@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QueueLess - Wait Smart</title>
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml"><text y='.9em' font-size='90'>🎫</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand"><img src="images/logo.png" alt="" width="36" height="36">Queue<b>Less</b></div>
+  <div class="tools">
+    <select id="lang" aria-label="Language"></select>
+    <button id="big" aria-label="Larger text">A+</button>
+    <button id="listen" data-i="listen"></button>
+  </div>
+</header>
+<nav hidden>
+  <button data-go="home" data-i="home"></button>
+  <button data-go="tok" data-i="my"></button>
+  <button data-go="staff">Staff</button>
+</nav>
+
+<main>
+  <section id="login" class="screen">
+    <img class="hero" src="images/government.png" alt="" width="72" height="72">
+    <h1 data-i="tag"></h1>
+    <h2 data-i="login"></h2>
+    <label><span data-i="mob"></span>
+      <input id="mob" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel">
+    </label>
+    <button id="send" class="primary" data-i="send"></button>
+    <div id="codeBox" hidden>
+      <label>Code (demo: 1234)
+        <input id="code" type="tel" inputmode="numeric" maxlength="4">
+      </label>
+      <button id="ver" class="primary" data-i="login"></button>
+    </div>
+    <p id="lerr" class="err" role="alert"></p>
+  </section>
+
+  <section id="home" class="screen" hidden>
+    <h1 data-i="tag"></h1>
+    <details>
+      <summary>New user guide</summary>
+      <ol>
+        <li>Choose your state and district.</li>
+        <li>Choose the department, then the service or doctor.</li>
+        <li>Check how many people are waiting.</li>
+        <li>Press "Get token". Come to the office when we alert you.</li>
+      </ol>
+    </details>
+    <label><span data-i="state"></span><select id="st"></select></label>
+    <label><span data-i="dist"></span><select id="di" disabled></select></label>
+
+    <div id="pick" hidden>
+      <h2 data-i="dept"></h2>
+      <div id="depts" class="grid"></div>
+    </div>
+    <div id="svcs" hidden>
+      <h2 data-i="svc"></h2>
+      <div id="svcList" class="grid"></div>
+    </div>
+
+    <div id="queue" class="panelbox" hidden>
+      <h2 id="qn"></h2>
+      <p id="qsub"></p>
+      <div class="stats">
+        <div><strong id="pp"></strong><span data-i="people"></span></div>
+        <div><strong id="ww"></strong><span data-i="wait"></span></div>
+        <div><strong id="cf"></strong><span>Accuracy</span></div>
+      </div>
+      <p>Status: <b id="sts"></b></p>
+      <p class="demo">Demo numbers. A real server will replace them.</p>
+      <p>Carry: <span id="docs"></span><br>Hours: Mon to Sat, 10:00 to 17:00 (check official timings)<br>
+      <a id="map" target="_blank" rel="noopener">Open office on map</a></p>
+      <label class="chk"><input type="checkbox" id="sms"> Send me SMS / WhatsApp alerts (demo only, needs a server)</label>
+      <button id="get" class="primary warn" data-i="get"></button>
+    </div>
+  </section>
+
+  <section id="tok" class="screen" hidden>
+    <h1 data-i="my"></h1>
+    <div id="tokbox"></div>
+  </section>
+
+  <section id="staff" class="screen" hidden>
+    <h1>Staff dashboard</h1>
+    <div id="slogin">
+      <label>Staff code (demo: 9999)<input id="scode" type="password" inputmode="numeric"></label>
+      <button id="sgo" class="primary">Login</button>
+      <p id="serr" class="err" role="alert"></p>
+    </div>
+    <div id="sdash" hidden>
+      <div class="stats">
+        <div><strong id="now"></strong><span>Now serving</span></div>
+        <div><strong id="sv"></strong><span>Served today</span></div>
+      </div>
+      <p>Next: <b id="nxt"></b></p>
+      <button id="call" class="primary">Mark served and call next</button>
+      <button id="skip" class="card">Skip</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Helpline: 1800-XXX-XXXX (add your real number)<br>
+  Your mobile number is used only to send token alerts.
+</footer>
+
+<div id="bot">
+  <div id="panel" class="panelbox" hidden>
+    <b>QueueLess helper</b>
+    <div class="bots">
+      <button class="card" data-q="w">Check wait time</button>
+      <button class="card" data-q="o">Find office</button>
+      <button class="card" data-q="d">Documents needed</button>
+    </div>
+    <p id="ans">Choose a service on Home first.</p>
+  </div>
+  <button class="fab" aria-label="Help chat">💬</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
