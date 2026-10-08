@@ -16,20 +16,27 @@ box-sizing:border-box;
 display:none!important;
 }
 
+html{
+scroll-behavior:smooth;
+}
+
 body{
 margin:0;
 background:var(--bg);
 color:var(--ink);
 font:var(--fs)/1.5 "Atkinson Hyperlegible",system-ui,"Noto Sans",sans-serif;
-background-image:url("./assets/background.jpg");
+background-image:url("./background.jpg");
 background-size:cover;
 background-attachment:fixed;
 background-position:center;
+min-height:100vh;
 }
 
 body.big{
 --fs:22px;
 }
+
+/* HEADER */
 
 header{
 display:flex;
@@ -40,6 +47,7 @@ align-items:center;
 padding:12px 16px;
 background:var(--pri);
 color:#fff;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
 }
 
 .brand{
@@ -54,10 +62,18 @@ font-size:1.5rem;
 color:var(--acc);
 }
 
+.brand img{
+width:36px;
+height:36px;
+object-fit:contain;
+border-radius:8px;
+}
+
 .tools{
 display:flex;
 gap:8px;
 flex-wrap:wrap;
+align-items:center;
 }
 
 button,
@@ -75,6 +91,16 @@ color:var(--ink);
 button{
 cursor:pointer;
 font-weight:700;
+transition:transform .15s ease,box-shadow .15s ease;
+}
+
+button:hover{
+transform:translateY(-1px);
+box-shadow:0 3px 8px rgba(0,0,0,.12);
+}
+
+button:active{
+transform:translateY(0);
 }
 
 .tools button,
@@ -82,10 +108,13 @@ font-weight:700;
 min-height:44px;
 }
 
+/* NAVIGATION */
+
 nav{
 display:flex;
 background:#fff;
 border-bottom:2px solid var(--line);
+box-shadow:0 1px 4px rgba(0,0,0,.08);
 }
 
 nav button{
@@ -98,12 +127,19 @@ border-bottom:4px solid transparent;
 
 nav button.on{
 border-bottom-color:var(--acc);
+background:#f7faf8;
 }
+
+/* MAIN */
 
 main{
 max-width:760px;
 margin:0 auto;
-padding:18px 16px 100px;
+padding:24px 16px 100px;
+}
+
+.screen{
+width:100%;
 }
 
 h1{
@@ -115,6 +151,10 @@ margin:.4em 0;
 h2{
 font-size:1.25rem;
 margin:1.2em 0 .4em;
+}
+
+p{
+margin:.8em 0;
 }
 
 label{
@@ -130,18 +170,56 @@ display:block;
 margin-top:4px;
 }
 
+input:focus,
+select:focus,
+button:focus{
+outline:none;
+border-color:var(--pri);
+}
+
+/* LOGIN */
+
+#login{
+background:rgba(255,255,255,.94);
+border:2px solid var(--line);
+border-radius:18px;
+padding:24px;
+box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+
+.hero{
+display:block;
+width:72px;
+height:72px;
+object-fit:contain;
+margin:0 auto 10px;
+}
+
+#login h1,
+#login h2{
+text-align:center;
+}
+
+/* GUIDE */
+
 details{
 background:#fff;
 border:2px solid var(--line);
 border-radius:12px;
 padding:10px 14px;
-margin:10px 0;
+margin:14px 0;
 }
 
 summary{
 font-weight:700;
 cursor:pointer;
 }
+
+details ol{
+padding-left:25px;
+}
+
+/* GRID / CARDS */
 
 .grid{
 display:grid;
@@ -167,6 +245,8 @@ border-color:var(--pri);
 box-shadow:inset 0 0 0 2px var(--pri);
 }
 
+/* BUTTONS */
+
 .primary{
 background:var(--pri);
 color:#fff;
@@ -175,18 +255,29 @@ width:100%;
 margin-top:12px;
 }
 
+.primary:hover{
+background:#0b4d40;
+}
+
 .warn{
 background:var(--acc);
 border-color:var(--acc);
 color:var(--ink);
 }
 
+.warn:hover{
+background:#d99000;
+}
+
+/* QUEUE PANEL */
+
 .panelbox{
-background:#fff;
+background:rgba(255,255,255,.96);
 border:2px solid var(--ink);
 border-radius:14px;
 padding:6px 16px 16px;
 margin-top:18px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
 }
 
 .stats{
@@ -202,6 +293,7 @@ border-radius:12px;
 padding:10px;
 text-align:center;
 font-size:.85rem;
+border:1px solid var(--line);
 }
 
 .stats strong{
@@ -225,7 +317,10 @@ font-weight:400;
 min-height:auto;
 width:24px;
 height:24px;
+margin-top:3px;
 }
+
+/* TICKET */
 
 .ticket{
 display:flex;
@@ -233,6 +328,8 @@ background:#fff;
 border:2px solid var(--ink);
 border-radius:14px;
 overflow:hidden;
+margin-top:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.1);
 }
 
 .ticket .no{
@@ -249,6 +346,8 @@ font-weight:700;
 padding:14px;
 }
 
+/* ALERTS / ERRORS */
+
 .banner{
 margin:12px 0;
 padding:14px;
@@ -261,14 +360,21 @@ font-weight:700;
 .err{
 color:var(--bad);
 font-weight:700;
+min-height:24px;
 }
+
+/* FOOTER */
 
 footer{
 padding:20px;
 text-align:center;
 font-size:.85rem;
 color:#55666a;
+background:rgba(255,255,255,.8);
+border-top:1px solid var(--line);
 }
+
+/* CHATBOT */
 
 #bot{
 position:fixed;
@@ -287,6 +393,7 @@ padding:0;
 border-radius:50%;
 background:var(--pri);
 border-color:var(--pri);
+color:#fff;
 font-size:1.5rem;
 }
 
@@ -307,16 +414,17 @@ min-height:44px;
 padding:8px 12px;
 }
 
-.hero{
-display:block;
-}
+/* ACCESSIBILITY */
 
 :focus-visible{
 outline:3px solid #1b5fd1;
 outline-offset:2px;
 }
 
+/* ANIMATION */
+
 @media(prefers-reduced-motion:no-preference){
+
 .banner{
 animation:p 1.4s 3;
 }
@@ -326,4 +434,58 @@ animation:p 1.4s 3;
 opacity:.6;
 }
 }
+
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+header{
+align-items:flex-start;
+}
+
+.brand{
+font-size:1.3rem;
+}
+
+.tools{
+width:100%;
+}
+
+.tools select{
+flex:1;
+}
+
+main{
+padding-left:12px;
+padding-right:12px;
+}
+
+#login{
+padding:18px;
+}
+
+.grid{
+grid-template-columns:1fr 1fr;
+}
+
+.ticket .no{
+padding:14px;
+font-size:1.8rem;
+}
+
+}
+
+@media(max-width:380px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.tools button,
+.tools select{
+font-size:.9rem;
+}
+
 }
