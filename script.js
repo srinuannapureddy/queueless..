@@ -1,6 +1,11 @@
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
 
 /* =========================================================
+   BACKEND CONFIGURATION
+   ========================================================= */
+const API_BASE = 'https://queueless-backend-29fm.onrender.com';
+
+/* =========================================================
    LANGUAGES
    ========================================================= */
 
@@ -60,7 +65,7 @@ const T = {
     cancel: 'टोकन रद्द करें',
     listen: 'सुनें',
     min: 'मिनट',
-    none: 'अभी કોઈ टोकन नहीं। होम से लें।',
+    none: 'अभी कोई टोकन नहीं। होम से लें।',
     near: 'आपकी बारी पास है। कृपया अभी दफ़्तर पहुँचें।'
   },
   te: {
@@ -151,6 +156,7 @@ const T = {
 
 const S = {};
 
+// Cleaned state parsing logic to fix district selection bug
 `Andhra Pradesh:Visakhapatnam,Vijayawada,Guntur;
 Arunachal Pradesh:Itanagar,Tawang,Pasighat;
 Assam:Guwahati,Dibrugarh,Silchar;
@@ -189,8 +195,12 @@ Lakshadweep:Lakshadweep;
 Puducherry:Puducherry,Karaikal,Mahe`
 .split(';')
 .forEach(x => {
-  const [a, b] = x.split(':');
-  S[a] = b.split(',');
+  const parts = x.trim().split(':');
+  if (parts.length === 2) {
+    const stateName = parts[0].trim();
+    const districts = parts[1].split(',').map(d => d.trim());
+    S[stateName] = districts;
+  }
 });
 
 /* =========================================================
@@ -301,10 +311,8 @@ function apply() {
    ========================================================= */
 
 function show(id) {
-  $$('.screen').forEach(s => {
-    s.hidden = s.id !== id;
-  });
-  $$('nav button').forEach(b => {
+  $$('.screen').forEach(s => {     s.hidden = s.id !== id;   });$$
+('nav button').forEach(b => {
     b.classList.toggle('on', b.dataset.go === id);
   });
 }
@@ -352,11 +360,11 @@ if ($('#listen')) {
 }
 
 /* =========================================================
-   FRONTEND-ONLY DEMO LOGIN - SEND OTP
+   REAL BACKEND LOGIN - SEND OTP
    ========================================================= */
 
 if ($('#send')) {
-  $('#send').onclick = () => {
+  $('#send').onclick = async () => {
     const input = $('#mob');
     if (!input) return;
     
@@ -366,56 +374,96 @@ if ($('#send')) {
       return;
     }
     
-    $('#lerr').textContent = 'OTP sent successfully! (Demo Mode)';
+    // Format to Indian prefix
+    phone = '+91' + phone;
     
-    if ($('#codeBox')) {
-      $('#codeBox').hidden = false;
-    }
+    $('#lerr').textContent = 'Sending OTP... (Please wait if server is waking up)';
+    $('#send').disabled = true;
     
-    $('#send').hidden = true;
-    
-    if ($('#code')) {
-      $('#code').focus();
+    try {
+      const response = await fetch(`${API_BASE}/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone })
+      });
+      
+      let data = {};
+      try { data = await response.json(); } catch(e) {}
+      
+      if (!response.ok) {
+        throw new Error(data.message || data.error || `Server error (${response.status})`);
+      }
+      
+      $('#lerr').textContent = 'OTP sent successfully.';
+      
+      if ($('#ver')) $('#ver').dataset.phone = phone;
+      if ($('#codeBox')) $('#codeBox').hidden = false;
+      $('#send').hidden = true;
+      if ($('#code')) $('#code').focus();
+      
+    } catch (error) {
+      console.error('SEND OTP ERROR:', error);
+      $('#lerr').textContent = error.message || 'Failed to send OTP. Please check your backend.';
+      $('#send').disabled = false;
     }
   };
 }
 
 /* =========================================================
-   FRONTEND-ONLY DEMO LOGIN - VERIFY OTP
+   REAL BACKEND LOGIN - VERIFY OTP
    ========================================================= */
 
 if ($('#ver')) {
-  $('#ver').onclick = () => {
+  $('#ver').onclick = async () => {
     const code = $('#code') ? $('#code').value.trim() : '';
+    const phone = $('#ver').dataset.phone;
     
-    if (!/^\d{4,8}$/.test(code)) {$('#lerr').textContent = 'Enter any valid OTP code (e.g. 1234).';
+    if (!phone) {
+      $('#lerr').textContent = 'Please request an OTP first.';
       return;
     }
     
-    $('#lerr').textContent = 'Login successful.';
-    
-    try {
-      localStorage.setItem('qlLogin', JSON.stringify({ 
-        phone: $('#mob').value.trim(), 
-        loggedIn: true 
-      }));
-    } catch (e) {}
-    
-    if ($('#codeBox')) {
-      $('#codeBox').hidden = true;
+    if (!/^\d{4,8}$/.test(code)) {$('#lerr').textContent = 'Enter the valid OTP sent to your phone.';
+      return;
     }
     
-if ($('nav')) {
-    $('nav').hidden = false;
-  }
-  show('home');
-  };
-}
-
-/* =========================================================
-   NAVIGATION BUTTONS
-   ========================================================= */
-$$('nav button').forEach(b => {
+    $('#lerr').textContent = 'Verifying...';
+    $('#ver').disabled = true;
+    
+    try {
+      const response = await fetch(`${API_BASE}/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone, code: code })
+      });
+      
+      let data = {};
+      try { data = await response.json(); } catch(e) {}
+      
+      if (!response.ok) {
+        throw new Error(data.message || data.error || `Verification failed (${response.status})`);
+      }
+      
+      const approved = data.status === 'approved' || data.valid === true || data.verified === true || data.success === true;
+      
+      if (!approved) {
+        throw new Error(data.message || 'Invalid or expired OTP.');
+      }
+      
+      $('#lerr').textContent = 'Login successful.';
+      
+      try {
+        localStorage.setItem('qlLogin', JSON.stringify({ phone: phone, loggedIn: true }));
+      } catch (e) {}
+      
+      if ($('#codeBox')) $('#codeBox').hidden = true;
+      if ($('nav'))$('nav').hidden = false;
+      show('home');
+      
+    } catch (error) {
+      console.error('VERIFY OTP ERROR:', error);
+      $('#lerr').textContent = error.message || 'Wrong or expired OTP.';
+      $('#ver').disabled = false;     }   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
   b.onclick = () => {
     show(b.dataset.go);
   };
@@ -428,10 +476,10 @@ $$('nav button').forEach(b => {
 const opts = (a, ph) => `<option value="">${ph}</option>` + a.map(x => `<option>${x}</option>`).join('');
 
 if ($('#st')) {
-  $('#st').innerHTML = opts(Object.keys(S), 'Select');
+  $('#st').innerHTML = opts(Object.keys(S), 'Select State');
   $('#st').onchange = e => {
     sel = { st: e.target.value, di: '', d: '', s: '' };
-    $('#di').innerHTML = opts(S[sel.st] || [], 'Select');
+    $('#di').innerHTML = opts(S[sel.st] || [], 'Select District');
     $('#di').disabled = !sel.st;
     $('#pick').hidden = true;
     $('#svcs').hidden = true;
@@ -457,19 +505,14 @@ if ($('#di')) {
 if ($('#depts')) {
   $('#depts').innerHTML = Object.keys(D).map(k => `<button class="card" data-d="${k}"><span class="ic">${D[k].i}</span>${D[k].n}</button>`).join('');
   
-  $$('#depts .card').forEach(b => {
-  b.onclick = () => {
-    sel.d = b.dataset.d;
-    sel.s = '';
-    $$('#depts .card').forEach(x => {
+  $$('#depts .card').forEach(b => {     b.onclick = () => {       sel.d = b.dataset.d;       sel.s = '';       $$
+('#depts .card').forEach(x => {
         x.classList.toggle('on', x === b);
       });
       $('#svcList').innerHTML = D[sel.d].s.map(n => `<button class="card">${n}</button>`).join('');
       
-      $$('#svcList .card').forEach(c => {
-  c.onclick = () => {
-    sel.s = c.textContent.trim();
-    $$('#svcList .card').forEach(x => {
+      $$('#svcList .card').forEach(c => {         c.onclick = () => {           sel.s = c.textContent.trim();           $$
+('#svcList .card').forEach(x => {
             x.classList.toggle('on', x === c);
           });
           showQ();
@@ -649,12 +692,7 @@ if ($('#skip')) {
    ========================================================= */
 
 if ($('.fab')) {
-  $('.fab').onclick = () => {
-    $('#panel').hidden = !$('#panel').hidden;
-  };
-}
-
-$$('#panel [data-q]').forEach(b => {
+  $('.fab').onclick = () => {$('#panel').hidden = !$('#panel').hidden;   }; }  $$('#panel [data-q]').forEach(b => {
   b.onclick = () => {
     const o = $('#ans');
     const k = b.dataset.q;
