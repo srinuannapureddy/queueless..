@@ -117,6 +117,10 @@ const S = {
    NEW DEPARTMENTS & CATEGORIES
    ========================================================= */
 
+/* =========================================================
+   DEPARTMENTS
+   ========================================================= */
+
 const D = {
   govt: {
     i: '🏛️',
@@ -124,7 +128,7 @@ const D = {
     c: 'G',
     m: 10,
     docs: 'Aadhaar Card, Application Form, Passport Size Photos',
-    s: ['Panchayat / Municipal Office', 'Revenue Department', 'Employment Exchange', 'Civil Court', 'Passport Office']
+    s: ['Panchayat / Municipal Office', 'Revenue Department', 'Employment Exchange', 'Civil Court', 'Passport Office', 'Sub-Registrar Office']
   },
   hospital: {
     i: '🏥',
