@@ -1,11 +1,6 @@
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
 
 /* =========================================================
-   BACKEND CONFIGURATION
-   ========================================================= */
-const API_BASE = 'https://queueless-backend-29fm.onrender.com';
-
-/* =========================================================
    LANGUAGES
    ========================================================= */
 
@@ -360,11 +355,11 @@ if ($('#listen')) {
 }
 
 /* =========================================================
-   REAL BACKEND LOGIN - SEND OTP
+   PRESENTATION DEMO LOGIN - SEND OTP
    ========================================================= */
 
 if ($('#send')) {
-  $('#send').onclick = async () => {
+  $('#send').onclick = () => {
     const input = $('#mob');
     if (!input) return;
     
@@ -374,96 +369,49 @@ if ($('#send')) {
       return;
     }
     
-    // Format to Indian prefix
-    phone = '+91' + phone;
+    // Proceed instantly to OTP verification box for demo purposes
+    $('#lerr').textContent = 'OTP sent successfully! (Demo Mode)';
     
-    $('#lerr').textContent = 'Sending OTP... (Please wait if server is waking up)';
-    $('#send').disabled = true;
+    if ($('#codeBox')) {
+      $('#codeBox').hidden = false;
+    }
     
-    try {
-      const response = await fetch(`${API_BASE}/send-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone })
-      });
-      
-      let data = {};
-      try { data = await response.json(); } catch(e) {}
-      
-      if (!response.ok) {
-        throw new Error(data.message || data.error || `Server error (${response.status})`);
-      }
-      
-      $('#lerr').textContent = 'OTP sent successfully.';
-      
-      if ($('#ver')) $('#ver').dataset.phone = phone;
-      if ($('#codeBox')) $('#codeBox').hidden = false;
-      $('#send').hidden = true;
-      if ($('#code')) $('#code').focus();
-      
-    } catch (error) {
-      console.error('SEND OTP ERROR:', error);
-      $('#lerr').textContent = error.message || 'Failed to send OTP. Please check your backend.';
-      $('#send').disabled = false;
+    $('#send').hidden = true;
+    
+    if ($('#code')) {
+      $('#code').focus();
     }
   };
 }
 
 /* =========================================================
-   REAL BACKEND LOGIN - VERIFY OTP
+   PRESENTATION DEMO LOGIN - VERIFY OTP
    ========================================================= */
 
 if ($('#ver')) {
-  $('#ver').onclick = async () => {
+  $('#ver').onclick = () => {
     const code = $('#code') ? $('#code').value.trim() : '';
-    const phone = $('#ver').dataset.phone;
     
-    if (!phone) {
-      $('#lerr').textContent = 'Please request an OTP first.';
+    if (!/^\d{4,8}$/.test(code)) {$('#lerr').textContent = 'Enter any valid OTP code (e.g. 1234).';
       return;
     }
     
-    if (!/^\d{4,8}$/.test(code)) {$('#lerr').textContent = 'Enter the valid OTP sent to your phone.';
-      return;
-    }
-    
-    $('#lerr').textContent = 'Verifying...';
-    $('#ver').disabled = true;
+    // Accept instantly for demo purposes
+    $('#lerr').textContent = 'Login successful.';
     
     try {
-      const response = await fetch(`${API_BASE}/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phone, code: code })
-      });
-      
-      let data = {};
-      try { data = await response.json(); } catch(e) {}
-      
-      if (!response.ok) {
-        throw new Error(data.message || data.error || `Verification failed (${response.status})`);
-      }
-      
-      const approved = data.status === 'approved' || data.valid === true || data.verified === true || data.success === true;
-      
-      if (!approved) {
-        throw new Error(data.message || 'Invalid or expired OTP.');
-      }
-      
-      $('#lerr').textContent = 'Login successful.';
-      
-      try {
-        localStorage.setItem('qlLogin', JSON.stringify({ phone: phone, loggedIn: true }));
-      } catch (e) {}
-      
-      if ($('#codeBox')) $('#codeBox').hidden = true;
-      if ($('nav'))$('nav').hidden = false;
-      show('home');
-      
-    } catch (error) {
-      console.error('VERIFY OTP ERROR:', error);
-      $('#lerr').textContent = error.message || 'Wrong or expired OTP.';
-      $('#ver').disabled = false;     }   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
+      localStorage.setItem('qlLogin', JSON.stringify({ 
+        phone: $('#mob').value.trim(), 
+        loggedIn: true 
+      }));
+    } catch (e) {}
+    
+    if ($('#codeBox')) {
+      $('#codeBox').hidden = true;
+    }
+    
+    if ($('nav')) {
+      $('nav').hidden = false;     }          show('home');   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
   b.onclick = () => {
     show(b.dataset.go);
   };
@@ -606,7 +554,7 @@ function renderTok() {
     </div>
     ${w <= 10 ? `<div class="banner" role="alert">${t('near')}</div>` : ''}
     <p>Arrive within 10 minutes of being called, or your token may be skipped.</p>
-    <p class="demo">Demo: the position moves every 6 seconds. ${tok.sms ? ' SMS alerts need a server to work.' : ''}</p>
+    <p class="demo">Demo: the position moves every 6 seconds.</p>
     <button class="card" id="cx">${t('cancel')}</button>
   `;
   const cancel = $('#cx');
