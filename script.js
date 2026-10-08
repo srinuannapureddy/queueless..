@@ -156,7 +156,6 @@ const T = {
 
 const S = {};
 
-// Every district in India categorized by State/UT
 `Andhra Pradesh:Alluri Sitharama Raju,Anakapalli,Ananthapuramu,Annamayya,Bapatla,Chittoor,Dr. B.R. Ambedkar Konaseema,East Godavari,Eluru,Guntur,Kakinada,Krishna,Kurnool,Nandyal,NTR,Palnadu,Parvathipuram Manyam,Prakasam,Sri Potti Sriramulu Nellore,Srikakulam,Tirupati,Visakhapatnam,Vizianagaram,West Godavari,Y.S.R. Kadapa;
 Arunachal Pradesh:Anjaw,Changlang,Dibang Valley,East Kameng,East Siang,Itanagar Capital Complex,Kamle,Kra Daadi,Kurung Kumey,Lepa Rada,Lohit,Longding,Lower Dibang Valley,Lower Siang,Lower Subansiri,Namsai,Pakke Kessang,Papum Pare,Shi Yomi,Siang,Tawang,Tirap,Upper Siang,Upper Subansiri,West Kameng,West Siang;
 Assam:Bajali,Baksa,Barpeta,Biswanath,Bongaigaon,Cachar,Charaideo,Chirang,Darrang,Dhemaji,Dhubri,Dibrugarh,Dima Hasao,Goalpara,Golaghat,Hailakandi,Hojai,Jorhat,Kamrup,Kamrup Metropolitan,Karbi Anglong,Karimganj,Kokrajhar,Lakhimpur,Majuli,Morigaon,Nagaon,Nalbari,Sivasagar,South Salmara Mankachar,Sonitpur,Tamulpur,Tinsukia,Udalguri,West Karbi Anglong;
@@ -279,7 +278,6 @@ const hash = s => {
    BACKEND SYNC FUNCTIONS
    ========================================================= */
 
-// Push token to server so other devices can see it
 const syncTokenToServer = async (tokenData) => {
   if (!userPhone) return;
   const endpoint = tokenData ? '/save-token' : '/cancel-token';
@@ -296,7 +294,6 @@ const syncTokenToServer = async (tokenData) => {
   }
 };
 
-// Fetch token from server when logging in on a new device
 const loadTokenFromServer = async () => {
   if (!userPhone) return;
   try {
@@ -308,7 +305,7 @@ const loadTokenFromServer = async () => {
     const data = await response.json();
     if (data.success && data.tokenData) {
       tok = data.tokenData;
-      renderTok(); // Update UI
+      renderTok();
     }
   } catch (e) {
     console.error('Failed to load token from server', e);
@@ -326,7 +323,9 @@ function apply() {
   });
   if ($('#mob')) $('#mob').placeholder = t('mob');
   if ($('#lang')) $('#lang').value = lang;
-  if (sel.s) showQ();
+  if (sel.s) {
+    try { showQ(); } catch(e) {}
+  }
   renderTok();
 }
 
@@ -361,9 +360,7 @@ if ($('#lang')) {
   $('#lang').innerHTML = Object.keys(L).map(k => `<option value="${k}">${L[k]}</option>`).join('');
   $('#lang').onchange = e => {
     lang = e.target.value;
-    try {
-      localStorage.setItem('qlLang', lang);
-    } catch (x) {}
+    try { localStorage.setItem('qlLang', lang); } catch (x) {}
     apply();
   };
 }
@@ -393,14 +390,14 @@ if ($('#send')) {
     if (!input) return;
     
     let phone = input.value.trim();
-    
-    if (!/^[6-9]\d{9}$/.test(phone)) {$('#lerr').textContent = 'Enter a valid 10-digit mobile number.';
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      if ($('#lerr')) $('#lerr').textContent = 'Enter a valid 10-digit mobile number.';
       return;
     }
     
     phone = '+91' + phone;
     
-    $('#lerr').textContent = 'Connecting to Server... (Please wait)';
+    if ($('#lerr')) $('#lerr').textContent = 'Connecting to Server... (Please wait)';
     $('#send').disabled = true;
     
     try {
@@ -415,9 +412,10 @@ if ($('#send')) {
       
       if (!response.ok) throw new Error(data.error);
       
-      // Tell user to enter 1234 for the demo
-      $('#lerr').textContent = 'Connected! Type "1234" to enter.';
-      $('#lerr').style.color = 'green';
+      if ($('#lerr')) {
+        $('#lerr').textContent = 'Connected! Type "1234" to enter.';
+        $('#lerr').style.color = 'green';
+      }
       
       if ($('#ver')) $('#ver').dataset.phone = phone;
       if ($('#codeBox')) $('#codeBox').hidden = false;
@@ -425,7 +423,10 @@ if ($('#send')) {
       if ($('#code')) $('#code').focus();
       
     } catch (error) {
-      $('#lerr').textContent = 'Failed to connect. Server might be asleep.';
+      if ($('#lerr')) {
+        $('#lerr').textContent = 'Failed to connect. Server might be asleep.';
+        $('#lerr').style.color = 'red';
+      }
       $('#send').disabled = false;
     }
   };
@@ -442,8 +443,10 @@ if ($('#ver')) {
     
     if (!phone) return;
     
-    $('#lerr').textContent = 'Logging in...';
-    $('#lerr').style.color = 'inherit';
+    if ($('#lerr')) {
+      $('#lerr').textContent = 'Logging in...';
+      $('#lerr').style.color = 'inherit';
+    }
     $('#ver').disabled = true;
     
     try {
@@ -458,15 +461,13 @@ if ($('#ver')) {
       
       if (!response.ok) throw new Error(data.error);
       
-      $('#lerr').textContent = 'Login successful.';
-      userPhone = phone; // Save phone to variable
+      if ($('#lerr')) $('#lerr').textContent = 'Login successful.';
+      userPhone = phone; 
       
-      // Save session locally
       try {
         localStorage.setItem('qlLogin', JSON.stringify({ phone: phone, loggedIn: true }));
       } catch (e) {}
       
-      // Ask the server if this phone number already has a token!
       await loadTokenFromServer();
       
       if ($('#codeBox')) $('#codeBox').hidden = true;
@@ -474,8 +475,10 @@ if ($('#ver')) {
       show('home');
       
     } catch (error) {
-      $('#lerr').textContent = 'Wrong Code. Try 1234.';
-      $('#lerr').style.color = 'red';
+      if ($('#lerr')) {
+        $('#lerr').textContent = 'Wrong Code. Try 1234.';
+        $('#lerr').style.color = 'red';
+      }
       $('#ver').disabled = false;     }   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
   b.onclick = () => {
     show(b.dataset.go);
@@ -492,11 +495,13 @@ if ($('#st')) {
   $('#st').innerHTML = opts(Object.keys(S).sort(), 'Select State');
   $('#st').onchange = e => {
     sel = { st: e.target.value, di: '', d: '', s: '' };
-    $('#di').innerHTML = opts((S[sel.st] || []).sort(), 'Select District');
-    $('#di').disabled = !sel.st;
-    $('#pick').hidden = true;
-    $('#svcs').hidden = true;
-    $('#queue').hidden = true;
+    if ($('#di')) {
+      $('#di').innerHTML = opts((S[sel.st] || []).sort(), 'Select District');
+      $('#di').disabled = !sel.st;
+    }
+    if ($('#pick')) $('#pick').hidden = true;
+    if ($('#svcs')) $('#svcs').hidden = true;
+    if ($('#queue')) $('#queue').hidden = true;
   };
 }
 
@@ -505,9 +510,9 @@ if ($('#di')) {
     sel.di = e.target.value;
     sel.d = '';
     sel.s = '';
-    $('#svcs').hidden = true;
-    $('#queue').hidden = true;
-    $('#pick').hidden = !sel.di;
+    if ($('#svcs')) $('#svcs').hidden = true;
+    if ($('#queue')) $('#queue').hidden = true;
+    if ($('#pick')) $('#pick').hidden = !sel.di;
   };
 }
 
@@ -518,23 +523,35 @@ if ($('#di')) {
 if ($('#depts')) {
   $('#depts').innerHTML = Object.keys(D).map(k => `<button class="card" data-d="${k}"><span class="ic">${D[k].i}</span>${D[k].n}</button>`).join('');
   
-  $$('#depts .card').forEach(b => {     b.onclick = () => {       sel.d = b.dataset.d;       sel.s = '';       $$
-('#depts .card').forEach(x => {
-        x.classList.toggle('on', x === b);
-      });
-      $('#svcList').innerHTML = D[sel.d].s.map(n => `<button class="card">${n}</button>`).join('');
+  $$('#depts .card').forEach(b => {     b.onclick = () => {       sel.d = b.dataset.d;       sel.s = '';              // Update visual selection safely       $$
+('#depts .card').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
       
-      $$('#svcList .card').forEach(c => {         c.onclick = () => {           sel.s = c.textContent.trim();           $$
-('#svcList .card').forEach(x => {
-            x.classList.toggle('on', x === c);
-          });
-          showQ();
-          $('#queue').scrollIntoView({ behavior: 'smooth' });
-        };
-      });
+      const svcList = $('#svcList');
+      if (svcList) {
+        svcList.innerHTML = D[sel.d].s.map(n => `<button class="card">${n}</button>`).join('');
+        
+        $$('#svcList .card').forEach(c => {           c.onclick = () => {             sel.s = c.textContent.trim();                          // Update visual selection safely             $$
+('#svcList .card').forEach(x => x.classList.remove('on'));
+            c.classList.add('on');
+            
+            // Run showQ safely
+            try {
+              showQ();
+              const qEl = $('#queue');
+              if (qEl) {
+                qEl.hidden = false;
+                qEl.scrollIntoView({ behavior: 'smooth' });
+              }
+            } catch (err) {
+              console.error("HTML mismatch error prevented scrolling:", err);
+            }
+          };
+        });
+      }
       
-      $('#svcs').hidden = false;
-      $('#queue').hidden = true;
+      if ($('#svcs')) $('#svcs').hidden = false;
+      if ($('#queue')) $('#queue').hidden = true;
     };
   });
 }
@@ -556,15 +573,16 @@ function pred() {
 function showQ() {
   if (!sel.d || !sel.s) return;
   const q = pred();
-  $('#qn').textContent = sel.s;
-  $('#qsub').textContent = `${D[sel.d].n}, ${sel.di}, ${sel.st}`;
-  $('#pp').textContent = q.p;
-  $('#ww').textContent = q.w + ' ' + t('min');
-  $('#cf').textContent = q.c + '%';
-  $('#sts').textContent = q.w < 20 ? 'Quiet' : q.w < 45 ? 'Moving normally' : 'Busy';
-  $('#docs').textContent = D[sel.d].docs;
-  $('#map').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(D[sel.d].n + ' ' + sel.di + ' ' + sel.st);
-  $('#queue').hidden = false;
+  
+  // Bulletproof safety checks on every element to prevent script crashes
+  if ($('#qn')) $('#qn').textContent = sel.s;
+  if ($('#qsub')) $('#qsub').textContent = `${D[sel.d].n}, ${sel.di}, ${sel.st}`;
+  if ($('#pp')) $('#pp').textContent = q.p;
+  if ($('#ww')) $('#ww').textContent = q.w + ' ' + t('min');
+  if ($('#cf')) $('#cf').textContent = q.c + '%';
+  if ($('#sts')) $('#sts').textContent = q.w < 20 ? 'Quiet' : q.w < 45 ? 'Moving normally' : 'Busy';
+  if ($('#docs')) $('#docs').textContent = D[sel.d].docs;
+  if ($('#map')) $('#map').href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(D[sel.d].n + ' ' + sel.di + ' ' + sel.st);
 }
 
 /* =========================================================
@@ -588,7 +606,7 @@ if ($('#get')) {
       notified: 0
     };
     
-    // Save token to Backend Database!
+    save();
     syncTokenToServer(tok);
     
     if ('Notification' in window && Notification.permission === 'default') {
@@ -629,7 +647,8 @@ function renderTok() {
   if (cancel) {
     cancel.onclick = () => {
       tok = null;
-      syncTokenToServer(null); // Delete token from backend Database!
+      syncTokenToServer(null); 
+      save();
       renderTok();
     };
   }
@@ -657,6 +676,7 @@ setInterval(() => {
     tok.notified = 1;
     alertMe();
   }
+  save();
   renderTok();
 }, 6000);
 
@@ -675,12 +695,14 @@ function rs() {
 
 if ($('#sgo')) {
   $('#sgo').onclick = () => {
-    if ($('#scode').value === '9999') {
-      $('#slogin').hidden = true;
-      $('#sdash').hidden = false;
-      rs();
-    } else {
-      $('#serr').textContent = 'Wrong staff code. The demo code is 9999.';
+    if ($('#scode')) {
+      if ($('#scode').value === '9999') {
+        if ($('#slogin')) $('#slogin').hidden = true;
+        if ($('#sdash')) $('#sdash').hidden = false;
+        rs();
+      } else {
+        if ($('#serr')) $('#serr').textContent = 'Wrong staff code. The demo code is 9999.';
+      }
     }
   };
 }
@@ -706,10 +728,12 @@ if ($('#skip')) {
    HELPER CHAT
    ========================================================= */
 
-if ($('.fab')) {
-  $('.fab').onclick = () => {$('#panel').hidden = !$('#panel').hidden;   }; }  $$('#panel [data-q]').forEach(b => {
+if ($('.fab')) {$('.fab').onclick = () => {
+    if ($('#panel')) $('#panel').hidden = !$('#panel').hidden;   }; }  $$('#panel [data-q]').forEach(b => {
   b.onclick = () => {
     const o = $('#ans');
+    if (!o) return;
+    
     const k = b.dataset.q;
     if (!sel.s) {
       o.textContent = 'Choose state, district, department and service on Home first.';
@@ -720,7 +744,7 @@ if ($('.fab')) {
       o.textContent = `${sel.s}, ${sel.di}: about ${r.w} min, ${r.p} people waiting.`;
     }
     if (k === 'o') {
-      o.innerHTML = `<a href="${$('#map').href}" target="_blank" rel="noopener">Open ${D[sel.d].n}, ${sel.di} on map</a>`;
+      o.innerHTML = `<a href="${$('#map') ? $('#map').href : '#'}" target="_blank" rel="noopener">Open ${D[sel.d].n}, ${sel.di} on map</a>`;
     }
     if (k === 'd') {
       o.textContent = 'Carry: ' + D[sel.d].docs;
@@ -740,8 +764,6 @@ async function init() {
     if (login && login.loggedIn) {
       userPhone = login.phone;
       if ($('nav'))$('nav').hidden = false;
-      
-      // Load ticket from the Backend Server!
       await loadTokenFromServer();
     }
   } catch (e) {}
