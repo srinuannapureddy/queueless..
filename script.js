@@ -1,6 +1,11 @@
 const $ = s => document.querySelector(s); const $$ = s => [...document.querySelectorAll(s)];
 
 /* =========================================================
+   BACKEND CONFIGURATION
+   ========================================================= */
+const API_BASE = 'https://queueless-backend-29fm.onrender.com';
+
+/* =========================================================
    LANGUAGES
    ========================================================= */
 
@@ -146,48 +151,48 @@ const T = {
 };
 
 /* =========================================================
-   INDIAN STATES / DISTRICTS
+   INDIAN STATES / DISTRICTS (FULL LIST)
    ========================================================= */
 
 const S = {};
 
-// Cleaned state parsing logic to fix district selection bug
-`Andhra Pradesh:Visakhapatnam,Vijayawada,Guntur;
-Arunachal Pradesh:Itanagar,Tawang,Pasighat;
-Assam:Guwahati,Dibrugarh,Silchar;
-Bihar:Patna,Gaya,Muzaffarpur;
-Chhattisgarh:Raipur,Bilaspur,Durg;
+// Every district in India categorized by State/UT
+`Andhra Pradesh:Alluri Sitharama Raju,Anakapalli,Ananthapuramu,Annamayya,Bapatla,Chittoor,Dr. B.R. Ambedkar Konaseema,East Godavari,Eluru,Guntur,Kakinada,Krishna,Kurnool,Nandyal,NTR,Palnadu,Parvathipuram Manyam,Prakasam,Sri Potti Sriramulu Nellore,Srikakulam,Tirupati,Visakhapatnam,Vizianagaram,West Godavari,Y.S.R. Kadapa;
+Arunachal Pradesh:Anjaw,Changlang,Dibang Valley,East Kameng,East Siang,Itanagar Capital Complex,Kamle,Kra Daadi,Kurung Kumey,Lepa Rada,Lohit,Longding,Lower Dibang Valley,Lower Siang,Lower Subansiri,Namsai,Pakke Kessang,Papum Pare,Shi Yomi,Siang,Tawang,Tirap,Upper Siang,Upper Subansiri,West Kameng,West Siang;
+Assam:Bajali,Baksa,Barpeta,Biswanath,Bongaigaon,Cachar,Charaideo,Chirang,Darrang,Dhemaji,Dhubri,Dibrugarh,Dima Hasao,Goalpara,Golaghat,Hailakandi,Hojai,Jorhat,Kamrup,Kamrup Metropolitan,Karbi Anglong,Karimganj,Kokrajhar,Lakhimpur,Majuli,Morigaon,Nagaon,Nalbari,Sivasagar,South Salmara Mankachar,Sonitpur,Tamulpur,Tinsukia,Udalguri,West Karbi Anglong;
+Bihar:Araria,Arwal,Aurangabad,Banka,Begusarai,Bhagalpur,Bhojpur,Buxar,Darbhanga,East Champaran,Gaya,Gopalganj,Jamui,Jehanabad,Kaimur,Katihar,Khagaria,Kishanganj,Lakhisarai,Madhepura,Madhubani,Munger,Muzaffarpur,Nalanda,Nawada,Patna,Purnia,Rohtas,Saharsa,Samastipur,Saran,Sheikhpura,Sheohar,Sitamarhi,Siwan,Supaul,Vaishali,West Champaran;
+Chhattisgarh:Balod,Baloda Bazar,Balrampur,Bastar,Bemetara,Bijapur,Bilaspur,Dantewada,Dhamtari,Durg,Gariaband,Gaurela Pendra Marwahi,Janjgir Champa,Jashpur,Kabirdham,Kanker,Kondagaon,Korba,Koriya,Mahasamund,Mungeli,Narayanpur,Raigarh,Raipur,Rajnandgaon,Sukma,Surajpur,Surguja;
 Goa:North Goa,South Goa;
-Gujarat:Rajkot,Ahmedabad,Surat,Vadodara;
-Haryana:Gurugram,Faridabad,Karnal;
-Himachal Pradesh:Shimla,Kangra,Mandi;
-Jharkhand:Ranchi,Dhanbad,East Singhbhum;
-Karnataka:Bengaluru Urban,Mysuru,Dharwad;
-Kerala:Thiruvananthapuram,Ernakulam,Kozhikode;
-Madhya Pradesh:Bhopal,Indore,Jabalpur;
-Maharashtra:Mumbai,Pune,Nagpur;
-Manipur:Imphal West,Imphal East,Thoubal;
-Meghalaya:East Khasi Hills,West Garo Hills,Ri-Bhoi;
-Mizoram:Aizawl,Lunglei,Champhai;
-Nagaland:Kohima,Dimapur,Mokokchung;
-Odisha:Khordha,Cuttack,Puri;
-Punjab:Ludhiana,Amritsar,Jalandhar;
-Rajasthan:Jaipur,Jodhpur,Udaipur;
-Sikkim:Gangtok,Namchi,Gyalshing;
-Tamil Nadu:Chennai,Coimbatore,Madurai;
-Telangana:Hyderabad,Warangal,Nizamabad;
-Tripura:West Tripura,North Tripura,Dhalai;
-Uttar Pradesh:Lucknow,Kanpur,Varanasi;
-Uttarakhand:Dehradun,Haridwar,Nainital;
-West Bengal:Kolkata,Howrah,Darjeeling;
-Andaman and Nicobar Islands:South Andaman,North and Middle Andaman,Nicobar;
+Gujarat:Ahmedabad,Amreli,Anand,Aravalli,Banaskantha,Bharuch,Bhavnagar,Botad,Chhota Udaipur,Dahod,Dang,Devbhoomi Dwarka,Gandhinagar,Gir Somnath,Jamnagar,Junagadh,Kheda,Kutch,Mahisagar,Mehsana,Morbi,Narmada,Navsari,Panchmahal,Patan,Porbandar,Rajkot,Sabarkantha,Surat,Surendranagar,Tapi,Vadodara,Valsad;
+Haryana:Ambala,Bhiwani,Charkhi Dadri,Faridabad,Fatehabad,Gurugram,Hisar,Jhajjar,Jind,Kaithal,Karnal,Kurukshetra,Mahendragarh,Nuh,Palwal,Panchkula,Panipat,Rewari,Rohtak,Sirsa,Sonipat,Yamunanagar;
+Himachal Pradesh:Bilaspur,Chamba,Hamirpur,Kangra,Kinnaur,Kullu,Lahaul and Spiti,Mandi,Shimla,Sirmaur,Solan,Una;
+Jharkhand:Bokaro,Chatra,Deoghar,Dhanbad,Dumka,East Singhbhum,Garhwa,Giridih,Godda,Gumla,Hazaribagh,Jamtara,Khunti,Koderma,Latehar,Lohardaga,Pakur,Palamu,Ramgarh,Ranchi,Sahibganj,Seraikela Kharsawan,Simdega,West Singhbhum;
+Karnataka:Bagalkot,Ballari,Belagavi,Bengaluru Rural,Bengaluru Urban,Bidar,Chamarajanagar,Chikkaballapur,Chikkamagaluru,Chitradurga,Dakshina Kannada,Davanagere,Dharwad,Gadag,Hassan,Haveri,Kalaburagi,Kodagu,Kolar,Koppal,Mandya,Mysuru,Raichur,Ramanagara,Shivamogga,Tumakuru,Udupi,Uttara Kannada,Vijayanagara,Vijayapura,Yadgir;
+Kerala:Alappuzha,Ernakulam,Idukki,Kannur,Kasaragod,Kollam,Kottayam,Kozhikode,Malappuram,Palakkad,Pathanamthitta,Thiruvananthapuram,Thrissur,Wayanad;
+Madhya Pradesh:Agar Malwa,Alirajpur,Anuppur,Ashoknagar,Balaghat,Barwani,Betul,Bhind,Bhopal,Burhanpur,Chhatarpur,Chhindwara,Damoh,Datia,Dewas,Dhar,Dindori,Guna,Gwalior,Harda,Narmadapuram,Indore,Jabalpur,Jhabua,Katni,Khandwa,Khargone,Mandla,Mandsaur,Morena,Narsinghpur,Neemuch,Niwari,Panna,Raisen,Rajgarh,Ratlam,Rewa,Sagar,Satna,Sehore,Seoni,Shahdol,Shajapur,Sheopur,Shivpuri,Sidhi,Singrauli,Tikamgarh,Ujjain,Umaria,Vidisha;
+Maharashtra:Ahmednagar,Akola,Amravati,Chhatrapati Sambhajinagar,Beed,Bhandara,Buldhana,Chandrapur,Dhule,Gadchiroli,Gondia,Hingoli,Jalgaon,Jalna,Kolhapur,Latur,Mumbai City,Mumbai Suburban,Nagpur,Nanded,Nandurbar,Nashik,Dharashiv,Palghar,Parbhani,Pune,Raigad,Ratnagiri,Sangli,Satara,Sindhudurg,Solapur,Thane,Wardha,Washim,Yavatmal;
+Manipur:Bishnupur,Chandel,Churachandpur,Imphal East,Imphal West,Jiribam,Kakching,Kamjong,Kangpokpi,Noney,Pherzawl,Senapati,Tamenglong,Tengnoupal,Thoubal,Ukhrul;
+Meghalaya:East Garo Hills,East Jaintia Hills,East Khasi Hills,North Garo Hills,Ri Bhoi,South Garo Hills,South West Garo Hills,South West Khasi Hills,West Garo Hills,West Jaintia Hills,West Khasi Hills;
+Mizoram:Aizawl,Champhai,Hnahthial,Khawzawl,Kolasib,Lawngtlai,Lunglei,Mamit,Saiha,Saitual,Serchhip;
+Nagaland:Chumoukedima,Dimapur,Kiphire,Kohima,Longleng,Mokokchung,Mon,Niuland,Noklak,Peren,Phek,Shamator,Tseminyu,Tuensang,Wokha,Zunheboto;
+Odisha:Angul,Balangir,Balasore,Bargarh,Bhadrak,Boudh,Cuttack,Deogarh,Dhenkanal,Gajapati,Ganjam,Jagatsinghpur,Jajpur,Jharsuguda,Kalahandi,Kandhamal,Kendrapara,Kendujhar,Khordha,Koraput,Malkangiri,Mayurbhanj,Nabarangpur,Nayagarh,Nuapada,Puri,Rayagada,Sambalpur,Subarnapur,Sundargarh;
+Punjab:Amritsar,Barnala,Bathinda,Faridkot,Fatehgarh Sahib,Fazilka,Ferozepur,Gurdaspur,Hoshiarpur,Jalandhar,Kapurthala,Ludhiana,Mansa,Moga,Pathankot,Patiala,Rupnagar,Sahibzada Ajit Singh Nagar,Sangrur,Shahid Bhagat Singh Nagar,Sri Muktsar Sahib,Tarn Taran;
+Rajasthan:Ajmer,Alwar,Banswara,Baran,Barmer,Bharatpur,Bhilwara,Bikaner,Bundi,Chittorgarh,Churu,Dausa,Dholpur,Dungarpur,Hanumangarh,Jaipur,Jaisalmer,Jalore,Jhalawar,Jhunjhunu,Jodhpur,Karauli,Kota,Nagaur,Pali,Pratapgarh,Rajsamand,Sawai Madhopur,Sikar,Sirohi,Sri Ganganagar,Tonk,Udaipur;
+Sikkim:Gangtok,Gyalshing,Mangan,Namchi,Pakyong,Soreng;
+Tamil Nadu:Ariyalur,Chengalpattu,Chennai,Coimbatore,Cuddalore,Dharmapuri,Dindigul,Erode,Kallakurichi,Kanchipuram,Kanyakumari,Karur,Krishnagiri,Madurai,Mayiladuthurai,Nagapattinam,Namakkal,Nilgiris,Perambalur,Pudukkottai,Ramanathapuram,Ranipet,Salem,Sivaganga,Tenkasi,Thanjavur,Theni,Thoothukudi,Tiruchirappalli,Tirunelveli,Tirupathur,Tiruppur,Tiruvallur,Tiruvannamalai,Tiruvarur,Vellore,Viluppuram,Virudhunagar;
+Telangana:Adilabad,Bhadradri Kothagudem,Hyderabad,Jagtial,Jangaon,Jayashankar Bhupalpally,Jogulamba Gadwal,Kamareddy,Karimnagar,Khammam,Komaram Bheem Asifabad,Mahabubabad,Mahabubnagar,Mancherial,Medak,Medchal Malkajgiri,Mulugu,Nagarkurnool,Nalgonda,Narayanpet,Nirmal,Nizamabad,Peddapalli,Rajanna Sircilla,Ranga Reddy,Sangareddy,Siddipet,Suryapet,Vikarabad,Wanaparthy,Warangal,Hanamkonda,Yadadri Bhuvanagiri;
+Tripura:Dhalai,Gomati,Khowai,North Tripura,Sepahijala,South Tripura,Unakoti,West Tripura;
+Uttar Pradesh:Agra,Aligarh,Ambedkar Nagar,Amethi,Amroha,Auraiya,Ayodhya,Azamgarh,Baghpat,Bahraich,Ballia,Balrampur,Banda,Barabanki,Bareilly,Basti,Bhadohi,Bijnor,Budaun,Bulandshahr,Chandauli,Chitrakoot,Deoria,Etah,Etawah,Farrukhabad,Fatehpur,Firozabad,Gautam Buddha Nagar,Ghaziabad,Ghazipur,Gonda,Gorakhpur,Hamirpur,Hapur,Hardoi,Hathras,Jalaun,Jaunpur,Jhansi,Kannauj,Kanpur Dehat,Kanpur Nagar,Kasganj,Kaushambi,Kheri,Kushinagar,Lalitpur,Lucknow,Maharajganj,Mahoba,Mainpuri,Mathura,Mau,Meerut,Mirzapur,Moradabad,Muzaffarnagar,Pilibhit,Pratapgarh,Prayagraj,Raebareli,Rampur,Saharanpur,Sambhal,Sant Kabir Nagar,Shahjahanpur,Shamli,Shravasti,Siddharthnagar,Sitapur,Sonbhadra,Sultanpur,Unnao,Varanasi;
+Uttarakhand:Almora,Bageshwar,Chamoli,Champawat,Dehradun,Haridwar,Nainital,Pauri Garhwal,Pithoragarh,Rudraprayag,Tehri Garhwal,Udham Singh Nagar,Uttarkashi;
+West Bengal:Alipurduar,Bankura,Birbhum,Cooch Behar,Dakshin Dinajpur,Darjeeling,Hooghly,Howrah,Jalpaiguri,Jhargram,Kalimpong,Kolkata,Malda,Murshidabad,Nadia,North 24 Parganas,Paschim Bardhaman,Paschim Medinipur,Purba Bardhaman,Purba Medinipur,Purulia,South 24 Parganas,Uttar Dinajpur;
+Andaman and Nicobar Islands:Nicobar,North and Middle Andaman,South Andaman;
 Chandigarh:Chandigarh;
-Dadra and Nagar Haveli and Daman and Diu:Daman,Diu,Dadra and Nagar Haveli;
-Delhi:New Delhi,South Delhi,North Delhi;
-Jammu and Kashmir:Srinagar,Jammu,Anantnag;
-Ladakh:Leh,Kargil;
+Dadra and Nagar Haveli and Daman and Diu:Dadra and Nagar Haveli,Daman,Diu;
+Delhi:Central Delhi,East Delhi,New Delhi,North Delhi,North East Delhi,North West Delhi,Shahdara,South Delhi,South East Delhi,South West Delhi,West Delhi;
+Jammu and Kashmir:Anantnag,Bandipora,Baramulla,Budgam,Doda,Ganderbal,Jammu,Kathua,Kishtwar,Kulgam,Kupwara,Poonch,Pulwama,Rajouri,Ramban,Reasi,Samba,Shopian,Srinagar,Udhampur;
+Ladakh:Kargil,Leh;
 Lakshadweep:Lakshadweep;
-Puducherry:Puducherry,Karaikal,Mahe`
+Puducherry:Karaikal,Mahe,Puducherry,Yanam`
 .split(';')
 .forEach(x => {
   const parts = x.trim().split(':');
@@ -260,23 +265,7 @@ const D = {
 let lang = 'en';
 let sel = { st: '', di: '', d: '', s: '' };
 let tok = null;
-
-try {
-  tok = JSON.parse(localStorage.getItem('qlTok'));
-  lang = localStorage.getItem('qlLang') || 'en';
-} catch (e) {}
-
-if (!T[lang]) {
-  lang = 'en';
-}
-
-const t = k => T[lang][k] || T.en[k];
-
-const save = () => {
-  try {
-    localStorage.setItem('qlTok', JSON.stringify(tok));
-  } catch (e) {}
-};
+let userPhone = null; // Track the logged-in user
 
 const hash = s => {
   let h = 0;
@@ -284,6 +273,46 @@ const hash = s => {
     h = (h * 31 + c.charCodeAt(0)) | 0;
   }
   return Math.abs(h);
+};
+
+/* =========================================================
+   BACKEND SYNC FUNCTIONS
+   ========================================================= */
+
+// Push token to server so other devices can see it
+const syncTokenToServer = async (tokenData) => {
+  if (!userPhone) return;
+  const endpoint = tokenData ? '/save-token' : '/cancel-token';
+  const body = tokenData ? { phone: userPhone, tokenData } : { phone: userPhone };
+  
+  try {
+    await fetch(`${API_BASE}${endpoint}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+  } catch (e) {
+    console.error('Failed to sync with backend server', e);
+  }
+};
+
+// Fetch token from server when logging in on a new device
+const loadTokenFromServer = async () => {
+  if (!userPhone) return;
+  try {
+    const response = await fetch(`${API_BASE}/get-token`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ phone: userPhone })
+    });
+    const data = await response.json();
+    if (data.success && data.tokenData) {
+      tok = data.tokenData;
+      renderTok(); // Update UI
+    }
+  } catch (e) {
+    console.error('Failed to load token from server', e);
+  }
 };
 
 /* =========================================================
@@ -355,11 +384,11 @@ if ($('#listen')) {
 }
 
 /* =========================================================
-   PRESENTATION DEMO LOGIN - SEND OTP
+   REAL BACKEND LOGIN - SEND OTP
    ========================================================= */
 
 if ($('#send')) {
-  $('#send').onclick = () => {
+  $('#send').onclick = async () => {
     const input = $('#mob');
     if (!input) return;
     
@@ -369,49 +398,85 @@ if ($('#send')) {
       return;
     }
     
-    // Proceed instantly to OTP verification box for demo purposes
-    $('#lerr').textContent = 'OTP sent successfully! (Demo Mode)';
+    phone = '+91' + phone;
     
-    if ($('#codeBox')) {
-      $('#codeBox').hidden = false;
-    }
+    $('#lerr').textContent = 'Connecting to Server... (Please wait)';
+    $('#send').disabled = true;
     
-    $('#send').hidden = true;
-    
-    if ($('#code')) {
-      $('#code').focus();
+    try {
+      const response = await fetch(`${API_BASE}/send-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone })
+      });
+      
+      let data = {};
+      try { data = await response.json(); } catch(e) {}
+      
+      if (!response.ok) throw new Error(data.error);
+      
+      // Tell user to enter 1234 for the demo
+      $('#lerr').textContent = 'Connected! Type "1234" to enter.';
+      $('#lerr').style.color = 'green';
+      
+      if ($('#ver')) $('#ver').dataset.phone = phone;
+      if ($('#codeBox')) $('#codeBox').hidden = false;
+      $('#send').hidden = true;
+      if ($('#code')) $('#code').focus();
+      
+    } catch (error) {
+      $('#lerr').textContent = 'Failed to connect. Server might be asleep.';
+      $('#send').disabled = false;
     }
   };
 }
 
 /* =========================================================
-   PRESENTATION DEMO LOGIN - VERIFY OTP
+   REAL BACKEND LOGIN - VERIFY OTP
    ========================================================= */
 
 if ($('#ver')) {
-  $('#ver').onclick = () => {
+  $('#ver').onclick = async () => {
     const code = $('#code') ? $('#code').value.trim() : '';
+    const phone = $('#ver').dataset.phone;
     
-    if (!/^\d{4,8}$/.test(code)) {$('#lerr').textContent = 'Enter any valid OTP code (e.g. 1234).';
-      return;
-    }
+    if (!phone) return;
     
-    // Accept instantly for demo purposes
-    $('#lerr').textContent = 'Login successful.';
+    $('#lerr').textContent = 'Logging in...';
+    $('#lerr').style.color = 'inherit';
+    $('#ver').disabled = true;
     
     try {
-      localStorage.setItem('qlLogin', JSON.stringify({ 
-        phone: $('#mob').value.trim(), 
-        loggedIn: true 
-      }));
-    } catch (e) {}
-    
-    if ($('#codeBox')) {
-      $('#codeBox').hidden = true;
-    }
-    
-    if ($('nav')) {
-      $('nav').hidden = false;     }          show('home');   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
+      const response = await fetch(`${API_BASE}/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phone, code: code })
+      });
+      
+      let data = {};
+      try { data = await response.json(); } catch(e) {}
+      
+      if (!response.ok) throw new Error(data.error);
+      
+      $('#lerr').textContent = 'Login successful.';
+      userPhone = phone; // Save phone to variable
+      
+      // Save session locally
+      try {
+        localStorage.setItem('qlLogin', JSON.stringify({ phone: phone, loggedIn: true }));
+      } catch (e) {}
+      
+      // Ask the server if this phone number already has a token!
+      await loadTokenFromServer();
+      
+      if ($('#codeBox')) $('#codeBox').hidden = true;
+      if ($('nav'))$('nav').hidden = false;
+      show('home');
+      
+    } catch (error) {
+      $('#lerr').textContent = 'Wrong Code. Try 1234.';
+      $('#lerr').style.color = 'red';
+      $('#ver').disabled = false;     }   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
   b.onclick = () => {
     show(b.dataset.go);
   };
@@ -424,10 +489,10 @@ if ($('#ver')) {
 const opts = (a, ph) => `<option value="">${ph}</option>` + a.map(x => `<option>${x}</option>`).join('');
 
 if ($('#st')) {
-  $('#st').innerHTML = opts(Object.keys(S), 'Select State');
+  $('#st').innerHTML = opts(Object.keys(S).sort(), 'Select State');
   $('#st').onchange = e => {
     sel = { st: e.target.value, di: '', d: '', s: '' };
-    $('#di').innerHTML = opts(S[sel.st] || [], 'Select District');
+    $('#di').innerHTML = opts((S[sel.st] || []).sort(), 'Select District');
     $('#di').disabled = !sel.st;
     $('#pick').hidden = true;
     $('#svcs').hidden = true;
@@ -522,7 +587,10 @@ if ($('#get')) {
       sms: $('#sms') ? $('#sms').checked : false,
       notified: 0
     };
-    save();
+    
+    // Save token to Backend Database!
+    syncTokenToServer(tok);
+    
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
@@ -561,7 +629,7 @@ function renderTok() {
   if (cancel) {
     cancel.onclick = () => {
       tok = null;
-      save();
+      syncTokenToServer(null); // Delete token from backend Database!
       renderTok();
     };
   }
@@ -589,7 +657,6 @@ setInterval(() => {
     tok.notified = 1;
     alertMe();
   }
-  save();
   renderTok();
 }, 6000);
 
@@ -662,17 +729,24 @@ if ($('.fab')) {
 });
 
 /* =========================================================
-   LOGIN STATE
+   INITIALIZE APP & CHECK IF LOGGED IN
    ========================================================= */
 
-try {
-  const login = JSON.parse(localStorage.getItem('qlLogin'));
-  if (login && login.loggedIn && $('nav')) {$('nav').hidden = false;
-  }
-} catch (e) {}
+async function init() {
+  try {
+    lang = localStorage.getItem('qlLang') || 'en';
+    const login = JSON.parse(localStorage.getItem('qlLogin'));
+    
+    if (login && login.loggedIn) {
+      userPhone = login.phone;
+      if ($('nav'))$('nav').hidden = false;
+      
+      // Load ticket from the Backend Server!
+      await loadTokenFromServer();
+    }
+  } catch (e) {}
 
-/* =========================================================
-   START APP
-   ========================================================= */
+  apply();
+}
 
-apply();
+init();
