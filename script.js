@@ -9,152 +9,31 @@ const API_BASE = 'https://queueless-backend-29fm.onrender.com';
 /* =========================================================
    LANGUAGES
    ========================================================= */
-
-const L = {
-  en: 'English',
-  hi: 'हिन्दी',
-  te: 'తెలుగు',
-  kn: 'ಕನ್ನಡ',
-  ta: 'தமிழ்',
-  gu: 'ગુજરાતી'
-};
-
-const V = {
-  en: 'en-IN',
-  hi: 'hi-IN',
-  te: 'te-IN',
-  kn: 'kn-IN',
-  ta: 'ta-IN',
-  gu: 'gu-IN'
-};
-
+const L = { en: 'English', hi: 'हिन्दी', te: 'తెలుగు', kn: 'ಕನ್ನಡ', ta: 'தமிழ்', gu: 'ગુજરાતી' };
+const V = { en: 'en-IN', hi: 'hi-IN', te: 'te-IN', kn: 'kn-IN', ta: 'ta-IN', gu: 'gu-IN' };
 const T = {
   en: {
-    home: 'Home',
-    my: 'My token',
-    state: 'State',
-    dist: 'District',
-    dept: 'Department',
-    svc: 'Select service',
-    people: 'People waiting',
-    wait: 'Estimated wait',
-    get: 'Get token',
-    login: 'Login with mobile',
-    mob: 'Mobile number',
-    send: 'Send code',
-    tag: "Skip the queue. Arrive when it's your turn.",
-    cancel: 'Cancel token',
-    listen: 'Listen',
-    min: 'min',
-    none: 'No token yet. Get one from Home.',
+    home: 'Home', my: 'My token', state: 'State', dist: 'District', dept: 'Department', svc: 'Select service',
+    people: 'People waiting', wait: 'Estimated wait', get: 'Get token', login: 'Login with mobile',
+    mob: 'Mobile number', send: 'Send code', tag: "Skip the queue. Arrive when it's your turn.",
+    cancel: 'Cancel token', listen: 'Listen', min: 'min', none: 'No token yet. Get one from Home.',
     near: 'Your turn is near. Please reach the office now.'
   },
   hi: {
-    home: 'होम',
-    my: 'मेरा टोकन',
-    state: 'राज्य',
-    dist: 'ज़िला',
-    dept: 'विभाग',
-    svc: 'सेवा चुनें',
-    people: 'इंतज़ार में लोग',
-    wait: 'अनुमानित समय',
-    get: 'टोकन लें',
-    login: 'मोबाइल से लॉगिन',
-    mob: 'मोबाइल नंबर',
-    send: 'कोड भेजें',
-    tag: 'लाइन छोड़ें। अपनी बारी पर आएँ।',
-    cancel: 'टोकन रद्द करें',
-    listen: 'सुनें',
-    min: 'मिनट',
-    none: 'अभी कोई टोकन नहीं। होम से लें।',
-    near: 'आपकी बारी पास है। कृपया अभी दफ़्तर पहुँचें।'
+    home: 'होम', my: 'मेरा टोकन', state: 'राज्य', dist: 'ज़िला', dept: 'विभाग', svc: 'सेवा चुनें',
+    people: 'इंतज़ार में लोग', wait: 'अनुमानित समय', get: 'टोकन लें', login: 'मोबाइल से लॉगिन',
+    mob: 'मोबाइल नंबर', send: 'कोड भेजें', tag: 'लाइन छोड़ें। अपनी बारी पर आएँ।', cancel: 'टोकन रद्द करें',
+    listen: 'सुनें', min: 'मिनट', none: 'अभी कोई टोकन नहीं। होम से लें।', near: 'आपकी बारी पास है। कृपया अभी दफ़्तर पहुँचें।'
   },
-  te: {
-    home: 'హోమ్',
-    my: 'నా టోకెన్',
-    state: 'రాష్ట్రం',
-    dist: 'జిల్లా',
-    dept: 'శాఖ',
-    svc: 'సేవను ఎంచుకోండి',
-    people: 'వేచి ఉన్నవారు',
-    wait: 'అంచనా సమయం',
-    get: 'టోకెన్ తీసుకోండి',
-    login: 'మొబైల్‌తో లాగిన్',
-    mob: 'మొబైల్ నంబర్',
-    send: 'కోడ్ పంపండి',
-    tag: 'క్యూ వద్దు. మీ వంతు వచ్చినప్పుడు రండి.',
-    cancel: 'టోకెన్ రద్దు',
-    listen: 'వినండి',
-    min: 'నిమి',
-    none: 'ఇంకా టోకెన్ లేదు. హోమ్ నుండి తీసుకోండి.',
-    near: 'మీ వంతు దగ్గరలో ఉంది. దయచేసి ఇప్పుడే కార్యాలయానికి రండి.'
-  },
-  kn: {
-    home: 'ಮುಖಪುಟ',
-    my: 'ನನ್ನ ಟೋಕನ್',
-    state: 'ರಾಜ್ಯ',
-    dist: 'ಜಿಲ್ಲೆ',
-    dept: 'ಇಲಾಖೆ',
-    svc: 'ಸೇವೆ ಆಯ್ಕೆಮಾಡಿ',
-    people: 'ಕಾಯುತ್ತಿರುವವರು',
-    wait: 'ಅಂದಾಜು ಸಮಯ',
-    get: 'ಟೋಕನ್ ಪಡೆಯಿರಿ',
-    login: 'ಮೊಬೈಲ್ ಲಾಗಿನ್',
-    mob: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ',
-    send: 'ಕೋಡ್ ಕಳುಹಿಸಿ',
-    tag: 'ಸಾಲು ಬೇಡ. ನಿಮ್ಮ ಸರದಿ ಬಂದಾಗ ಬನ್ನಿ.',
-    cancel: 'ಟೋಕನ್ ರದ್ದು',
-    listen: 'ಕೇಳಿ',
-    min: 'ನಿಮಿಷ',
-    none: 'ಇನ್ನೂ ಟೋಕನ್ ಇಲ್ಲ. ಮುಖಪುಟದಿಂದ ಪಡೆಯಿರಿ.',
-    near: 'ನಿಮ್ಮ ಸರದಿ ಹತ್ತಿರವಿದೆ. ದಯವಿಟ್ಟು ಈಗ ಕಚೇರಿಗೆ ಬನ್ನಿ.'
-  },
-  ta: {
-    home: 'முகப்பு',
-    my: 'என் டோக்கன்',
-    state: 'மாநிலம்',
-    dist: 'மாவட்டம்',
-    dept: 'துறை',
-    svc: 'சேவையைத் தேர்வு செய்க',
-    people: 'காத்திருப்போர்',
-    wait: 'மதிப்பிட்ட நேரம்',
-    get: 'டோக்கன் பெறுக',
-    login: 'மொபைல் உள்நுழைவு',
-    mob: 'மொபைல் எண்',
-    send: 'குறியீடு அனுப்பு',
-    tag: 'வரிசை வேண்டாம். உங்கள் முறை வரும்போது வாருங்கள்.',
-    cancel: 'டோக்கனை ரத்து செய்',
-    listen: 'கேளுங்கள்',
-    min: 'நிமி',
-    none: 'டோக்கன் இல்லை. முகப்பில் பெறுங்கள்.',
-    near: 'உங்கள் முறை நெருங்கிவிட்டது. இப்போதே அலுவலகத்துக்கு வாருங்கள்.'
-  },
-  gu: {
-    home: 'હોમ',
-    my: 'મારું ટોકન',
-    state: 'રાજ્ય',
-    dist: 'જિલ્લો',
-    dept: 'વિભાગ',
-    svc: 'સેવા પસંદ કરો',
-    people: 'રાહ જોતા લોકો',
-    wait: 'અંદાજિત સમય',
-    get: 'ટોકન મેળવો',
-    login: 'મોબાઇલ લૉગિન',
-    mob: 'મોબાઇલ નંબર',
-    send: 'કોડ મોકલો',
-    tag: 'લાઇન નહીં. તમારો વારો આવે ત્યારે આવો.',
-    cancel: 'ટોકન રદ કરો',
-    listen: 'સાંભળો',
-    min: 'મિનિટ',
-    none: 'હજી ટોકન નથી. હોમમાંથી મેળવો.',
-    near: 'તમારો વારો નજીક છે. કૃપા કરીને હવે ઓફિસ પહોંચો.'
-  }
+  te: { home: 'హోమ్', my: 'నా టోకెన్', state: 'రాష్ట్రం', dist: 'జిల్లా', dept: 'శాఖ', svc: 'సేవను ఎంచుకోండి', people: 'వేచి ఉన్నవారు', wait: 'అంచనా సమయం', get: 'టోకెన్ తీసుకోండి', login: 'మొబైల్‌తో లాగిన్', mob: 'మొబైల్ నంబర్', send: 'కోడ్ పంపండి', tag: 'క్యూ వద్దు. మీ వంతు వచ్చినప్పుడు రండి.', cancel: 'టోకెన్ రద్దు', listen: 'వినండి', min: 'నిమి', none: 'ఇంకా టోకెన్ లేదు. హోమ్ నుండి తీసుకోండి.', near: 'మీ వంతు దగ్గరలో ఉంది. దయచేసి ఇప్పుడే కార్యాలయానికి రండి.' },
+  kn: { home: 'ಮುಖಪುಟ', my: 'ನನ್ನ ಟೋಕನ್', state: 'ರಾಜ್ಯ', dist: 'ಜಿಲ್ಲೆ', dept: 'ಇಲಾಖೆ', svc: 'ಸೇವೆ ಆಯ್ಕೆಮಾಡಿ', people: 'ಕಾಯುತ್ತಿರುವವರು', wait: 'ಅಂದಾಜು ಸಮಯ', get: 'ಟೋಕನ್ ಪಡೆಯಿರಿ', login: 'ಮೊಬೈಲ್ ಲಾಗಿನ್', mob: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ', send: 'ಕೋಡ್ ಕಳುಹಿಸಿ', tag: 'ಸಾಲು ಬೇಡ. ನಿಮ್ಮ ಸರದಿ ಬಂದಾಗ ಬನ್ನಿ.', cancel: 'ಟೋಕನ್ ರದ್ದು', listen: 'ಕೇಳಿ', min: 'ನಿಮಿಷ', none: 'ಇನ್ನೂ ಟೋಕನ್ ಇಲ್ಲ. ಮುಖಪುಟದಿಂದ ಪಡೆಯಿರಿ.', near: 'ನಿಮ್ಮ ಸರದಿ ಹತ್ತಿರವಿದೆ. ದಯವಿಟ್ಟು ಈಗ ಕಚೇರಿಗೆ ಬನ್ನಿ.' },
+  ta: { home: 'முகப்பு', my: 'என் டோக்கன்', state: 'மாநிலம்', dist: 'மாவட்டம்', dept: 'துறை', svc: 'சேவையைத் தேர்வு செய்க', people: 'காத்திருப்போர்', wait: 'மதிப்பிட்ட நேரம்', get: 'டோக்கன் பெறுக', login: 'மொபைல் உள்நுழைவு', mob: 'மொபைல் எண்', send: 'குறியீடு அனுப்பு', tag: 'வரிசை வேண்டாம். உங்கள் முறை வரும்போது வாருங்கள்.', cancel: 'டோக்கனை ரத்து செய்', listen: 'கேளுங்கள்', min: 'நிமி', none: 'டோக்கன் இல்லை. முகப்பில் பெறுங்கள்.', near: 'உங்கள் முறை நெருங்கிவிட்டது. இப்போதே அலுவலகத்துக்கு வாருங்கள்.' },
+  gu: { home: 'હોમ', my: 'મારું ટોકન', state: 'રાજ્ય', dist: 'જિલ્લો', dept: 'વિભાગ', svc: 'સેવા પસંદ કરો', people: 'રાહ જોતા લોકો', wait: 'અંદાજિત સમય', get: 'ટોકન મેળવો', login: 'મોબાઇલ લૉગિન', mob: 'મોબાઇલ નંબર', send: 'કોડ મોકલો', tag: 'લાઇન નહીં. તમારો વારો આવે ત્યારે આવો.', cancel: 'ટોકન રદ કરો', listen: 'સાંભળો', min: 'મિનિટ', none: 'હજી ટોકન નથી. હોમમાંથી મેળવો.', near: 'તમારો વારો નજીક છે. કૃપા કરીને હવે ઓફિસ પહોંચો.' }
 };
 
 /* =========================================================
-   INDIAN STATES / DISTRICTS (SAFE FORMAT)
+   INDIAN STATES / DISTRICTS
    ========================================================= */
-
 const S = {
   "Andhra Pradesh": ["Alluri Sitharama Raju","Anakapalli","Ananthapuramu","Annamayya","Bapatla","Chittoor","Dr. B.R. Ambedkar Konaseema","East Godavari","Eluru","Guntur","Kakinada","Krishna","Kurnool","Nandyal","NTR","Palnadu","Parvathipuram Manyam","Prakasam","Sri Potti Sriramulu Nellore","Srikakulam","Tirupati","Visakhapatnam","Vizianagaram","West Godavari","Y.S.R. Kadapa"],
   "Arunachal Pradesh": ["Anjaw","Changlang","Dibang Valley","East Kameng","East Siang","Itanagar Capital Complex","Kamle","Kra Daadi","Kurung Kumey","Lepa Rada","Lohit","Longding","Lower Dibang Valley","Lower Siang","Lower Subansiri","Namsai","Pakke Kessang","Papum Pare","Shi Yomi","Siang","Tawang","Tirap","Upper Siang","Upper Subansiri","West Kameng","West Siang"],
@@ -195,9 +74,8 @@ const S = {
 };
 
 /* =========================================================
-   DEPARTMENTS (WITH GOVERNMENT OFFICE ADDED)
+   DEPARTMENTS
    ========================================================= */
-
 const D = {
   govt: {
     i: '🏛️',
@@ -260,7 +138,6 @@ const D = {
 /* =========================================================
    APP STATE & SYNCING
    ========================================================= */
-
 let lang = 'en';
 let sel = { st: '', di: '', d: '', s: '' };
 let tok = null;
@@ -308,7 +185,6 @@ const loadTokenFromServer = async () => {
 /* =========================================================
    APPLY LANGUAGE & RENDER
    ========================================================= */
-
 function apply() {
   document.documentElement.lang = lang;
   $$('[data-i]').forEach(e => {
@@ -354,7 +230,6 @@ if ($('#listen')) {
 /* =========================================================
    LOGIN & VERIFICATION
    ========================================================= */
-
 if ($('#send')) {
   $('#send').onclick = async () => {
     const input = $('#mob');
@@ -444,7 +319,6 @@ if ($('#ver')) {
 /* =========================================================
    UI SELECTION LOGIC
    ========================================================= */
-
 const opts = (a, ph) => `<option value="">${ph}</option>` + a.map(x => `<option>${x}</option>`).join('');
 
 if ($('#st')) {
@@ -510,7 +384,6 @@ if ($('#depts')) {
 /* =========================================================
    QUEUE SYSTEM
    ========================================================= */
-
 function pred() {
   if (!sel.d || !D[sel.d]) return { p: 0, w: 0, c: 0 };
   const h = hash(sel.st + sel.di + sel.d + sel.s + new Date().getHours());
@@ -614,7 +487,6 @@ setInterval(() => {
 /* =========================================================
    STAFF DASHBOARD
    ========================================================= */
-
 let qWait = [233, 234, 235, 236, 237, 238];
 let served = 124;
 
@@ -658,7 +530,6 @@ if ($('#skip')) {
 /* =========================================================
    HELPER CHAT
    ========================================================= */
-
 if ($('.fab')) {$('.fab').onclick = () => {
     if ($('#panel')) $('#panel').hidden = !$('#panel').hidden;   }; }  $$('#panel [data-q]').forEach(b => {
   b.onclick = () => {
@@ -686,7 +557,6 @@ if ($('.fab')) {$('.fab').onclick = () => {
 /* =========================================================
    INITIALIZE APP & CHECK IF LOGGED IN
    ========================================================= */
-
 async function init() {
   try {
     lang = localStorage.getItem('qlLang') || 'en';
