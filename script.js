@@ -60,7 +60,7 @@ const T = {
     cancel: 'टोकन रद्द करें',
     listen: 'सुनें',
     min: 'मिनट',
-    none: 'अभी कोई टोकन नहीं। होम से लें।',
+    none: 'अभी કોઈ टोकन नहीं। होम से लें।',
     near: 'आपकी बारी पास है। कृपया अभी दफ़्तर पहुँचें।'
   },
   te: {
@@ -301,8 +301,10 @@ function apply() {
    ========================================================= */
 
 function show(id) {
-  $$('.screen').forEach(s => {     s.hidden = s.id !== id;   });$$
-('nav button').forEach(b => {
+  $$('.screen').forEach(s => {
+    s.hidden = s.id !== id;
+  });
+  $$('nav button').forEach(b => {
     b.classList.toggle('on', b.dataset.go === id);
   });
 }
@@ -360,12 +362,10 @@ if ($('#send')) {
     
     let phone = input.value.trim();
     
-    // Validate number format
     if (!/^[6-9]\d{9}$/.test(phone)) {$('#lerr').textContent = 'Enter a valid 10-digit mobile number.';
       return;
     }
     
-    // Proceed instantly to OTP verification box for demo purposes
     $('#lerr').textContent = 'OTP sent successfully! (Demo Mode)';
     
     if ($('#codeBox')) {
@@ -392,7 +392,6 @@ if ($('#ver')) {
       return;
     }
     
-    // Accept instantly for demo purposes
     $('#lerr').textContent = 'Login successful.';
     
     try {
@@ -406,8 +405,17 @@ if ($('#ver')) {
       $('#codeBox').hidden = true;
     }
     
-    if ($('nav')) {
-      $('nav').hidden = false;     }          show('home');   }; }  /* =========================================================    NAVIGATION BUTTONS    ========================================================= */  $$('nav button').forEach(b => {
+if ($('nav')) {
+    $('nav').hidden = false;
+  }
+  show('home');
+  };
+}
+
+/* =========================================================
+   NAVIGATION BUTTONS
+   ========================================================= */
+$$('nav button').forEach(b => {
   b.onclick = () => {
     show(b.dataset.go);
   };
@@ -449,14 +457,19 @@ if ($('#di')) {
 if ($('#depts')) {
   $('#depts').innerHTML = Object.keys(D).map(k => `<button class="card" data-d="${k}"><span class="ic">${D[k].i}</span>${D[k].n}</button>`).join('');
   
-  $$('#depts .card').forEach(b => {     b.onclick = () => {       sel.d = b.dataset.d;       sel.s = '';       $$
-('#depts .card').forEach(x => {
+  $$('#depts .card').forEach(b => {
+  b.onclick = () => {
+    sel.d = b.dataset.d;
+    sel.s = '';
+    $$('#depts .card').forEach(x => {
         x.classList.toggle('on', x === b);
       });
       $('#svcList').innerHTML = D[sel.d].s.map(n => `<button class="card">${n}</button>`).join('');
       
-      $$('#svcList .card').forEach(c => {         c.onclick = () => {           sel.s = c.textContent.trim();           $$
-('#svcList .card').forEach(x => {
+      $$('#svcList .card').forEach(c => {
+  c.onclick = () => {
+    sel.s = c.textContent.trim();
+    $$('#svcList .card').forEach(x => {
             x.classList.toggle('on', x === c);
           });
           showQ();
@@ -636,7 +649,12 @@ if ($('#skip')) {
    ========================================================= */
 
 if ($('.fab')) {
-  $('.fab').onclick = () => {$('#panel').hidden = !$('#panel').hidden;   }; }  $$('#panel [data-q]').forEach(b => {
+  $('.fab').onclick = () => {
+    $('#panel').hidden = !$('#panel').hidden;
+  };
+}
+
+$$('#panel [data-q]').forEach(b => {
   b.onclick = () => {
     const o = $('#ans');
     const k = b.dataset.q;
