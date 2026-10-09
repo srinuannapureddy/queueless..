@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in - QueueLess</title>
+<style>
+  :root{
+    --navy:#14213d; --saffron:#e8870e; --saffron-dark:#b96a05;
+    --bg:#f3f6fb; --card:#ffffff; --line:#cfd8e6; --ok:#1b7a3d; --err:#b3261e; --muted:#51607a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;min-height:100%}
+  body{
+    font-family:"Noto Sans","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    background:var(--bg); color:var(--navy); line-height:1.5; font-size:18px;
+  }
+  .top{
+    background:var(--navy); color:#fff; display:flex; align-items:center;
+    justify-content:space-between; gap:12px; padding:12px 20px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; color:#fff; text-decoration:none; font-size:22px; font-weight:700}
+  .brand img{height:36px; width:auto; display:block}
+  .brand span b{color:var(--saffron)}
+  .lang select{
+    font:inherit; font-size:16px; padding:8px 10px; border-radius:8px; border:2px solid #fff;
+    background:#fff; color:var(--navy); min-height:44px;
+  }
+  main{
+    max-width:960px; margin:0 auto; padding:28px 16px 40px;
+    display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:center;
+  }
+  .intro h1{font-size:34px; line-height:1.2; margin:0 0 12px}
+  .intro p{color:var(--muted); margin:0 0 16px}
+  .intro img{max-width:100%; height:auto; border-radius:12px; display:block}
+  .card{
+    background:var(--card); border:2px solid var(--line); border-radius:16px; padding:24px;
+    box-shadow:0 8px 24px rgba(20,33,61,.08);
+  }
+  .steps{display:flex; gap:8px; margin:0 0 18px; padding:0; list-style:none}
+  .steps li{
+    flex:1; padding:8px 10px; border-radius:8px; background:var(--bg); color:var(--muted);
+    font-size:15px; font-weight:600; text-align:center; border:2px solid transparent;
+  }
+  .steps li.on{background:#fff4e2; color:var(--saffron-dark); border-color:var(--saffron)}
+  .steps li.done{background:#e6f4ea; color:var(--ok)}
+  h2{font-size:24px; margin:0 0 6px}
+  .hint{color:var(--muted); font-size:16px; margin:0 0 16px}
+  label{display:block; font-weight:700; margin:0 0 6px}
+  .phone{display:flex; gap:8px}
+  .cc{
+    display:flex; align-items:center; padding:0 14px; border:2px solid var(--line);
+    border-radius:10px; background:var(--bg); font-weight:700; min-height:56px;
+  }
+  input{
+    font:inherit; font-size:22px; letter-spacing:2px; width:100%; min-height:56px;
+    padding:10px 14px; border:2px solid var(--line); border-radius:10px; color:var(--navy);
+  }
+  input:focus,select:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--saffron); outline-offset:2px}
+  .btn{
+    display:block; width:100%; margin-top:16px; min-height:56px; border:0; border-radius:10px;
+    background:var(--saffron); color:#1b1200; font:inherit; font-weight:700; font-size:20px; cursor:pointer;
+  }
+  .btn:hover{background:#f29a2e}
+  .btn.ghost{background:transparent; border:2px solid var(--line); color:var(--navy); font-size:17px; min-height:48px}
+  .btn.ghost:hover{background:var(--bg)}
+  .msg{min-height:26px; margin:10px 0 0; font-weight:600; font-size:16px}
+  .msg.err{color:var(--err)} .msg.ok{color:var(--ok)}
+  .demo{margin-top:14px; padding:10px 12px; background:#fff4e2; border-radius:8px; font-size:15px}
+  .skip{text-align:center; margin:18px 0 0; font-size:16px}
+  .skip a{color:var(--navy); font-weight:700}
+  .hidden{display:none}
+  footer{text-align:center; color:var(--muted); font-size:15px; padding:0 16px 28px}
+  @media (max-width:760px){
+    main{grid-template-columns:1fr; padding-top:18px}
+    .intro{order:2} .intro h1{font-size:26px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="index.html" aria-label="QueueLess home">
+    <img src="logo.png" alt="" onerror="this.style.display='none'">
+    <span>Queue<b>Less</b></span>
+  </a>
+  <div class="lang">
+    <label for="lang" class="hidden">Language</label>
+    <select id="lang" aria-label="Language">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="te">తెలుగు</option>
+    </select>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <h1 data-t="heroTitle">Take your token from home. Reach the office only when your turn is near.</h1>
+    <p data-t="heroText">Sign in with your mobile number. We will send alerts to this number.</p>
+    <img src="government.png" alt="" onerror="this.style.display='none'">
+  </section>
+
+  <section class="card" aria-live="polite">
+    <ol class="steps">
+      <li id="s1" class="on"><span data-t="step1">1. Mobile number</span></li>
+      <li id="s2"><span data-t="step2">2. Enter code</span></li>
+    </ol>
+
+    <!-- Step 1 -->
+    <div id="stepMobile">
+      <h2 data-t="signIn">Sign in</h2>
+      <p class="hint" data-t="mobileHint">Enter your 10-digit mobile number.</p>
+      <label for="mobile" data-t="mobileLabel">Mobile number</label>
+      <div class="phone">
+        <div class="cc">+91</div>
+        <input id="mobile" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="9876543210">
+      </div>
+      <button class="btn" id="sendBtn" type="button" data-t="sendOtp">Send OTP</button>
+      <p class="msg" id="msg1"></p>
+    </div>
+
+    <!-- Step 2 -->
+    <div id="stepOtp" class="hidden">
+      <h2 data-t="otpTitle">Enter the code</h2>
+      <p class="hint"><span data-t="otpHint">We sent a 4-digit code to</span> <b id="shownNum"></b></p>
+      <label for="otp" data-t="otpLabel">4-digit code</label>
+      <input id="otp" type="text" inputmode="numeric" maxlength="4" autocomplete="one-time-code" placeholder="••••">
+      <button class="btn" id="verifyBtn" type="button" data-t="verify">Verify and sign in</button>
+      <button class="btn ghost" id="backBtn" type="button" data-t="change">Change mobile number</button>
+      <p class="msg" id="msg2"></p>
+      <div class="demo" data-t="demo">Demo mode: use code 1234.</div>
+    </div>
+
+    <p class="skip"><a href="index.html" data-t="skip">Continue without signing in</a></p>
+  </section>
+</main>
+
+<footer data-t="helpline">Helpline: 1800-123-4567</footer>
+
+<script>
+(function(){
+  var T = {
+    en:{heroTitle:"Take your token from home. Reach the office only when your turn is near.",
+      heroText:"Sign in with your mobile number. We will send alerts to this number.",
+      step1:"1. Mobile number",step2:"2. Enter code",signIn:"Sign in",
+      mobileHint:"Enter your 10-digit mobile number.",mobileLabel:"Mobile number",sendOtp:"Send OTP",
+      otpTitle:"Enter the code",otpHint:"We sent a 4-digit code to",otpLabel:"4-digit code",
+      verify:"Verify and sign in",change:"Change mobile number",demo:"Demo mode: use code 1234.",
+      skip:"Continue without signing in",helpline:"Helpline: 1800-123-4567",
+      badMobile:"Enter a valid 10-digit mobile number starting with 6, 7, 8 or 9.",
+      sent:"Code sent.",badOtp:"The code is not correct. Try 1234.",ok:"Signed in. Taking you to the home page..."},
+    hi:{heroTitle:"घर से टोकन लें। अपनी बारी पास आने पर ही दफ़्तर पहुँचें।",
+      heroText:"अपने मोबाइल नंबर से साइन इन करें। अलर्ट इसी नंबर पर भेजे जाएँगे।",
+      step1:"1. मोबाइल नंबर",step2:"2. कोड डालें",signIn:"साइन इन",
+      mobileHint:"अपना 10 अंकों का मोबाइल नंबर डालें।",mobileLabel:"मोबाइल नंबर",sendOtp:"OTP भेजें",
+      otpTitle:"कोड डालें",otpHint:"हमने 4 अंकों का कोड भेजा है:",otpLabel:"4 अंकों का कोड",
+      verify:"जाँचें और साइन इन करें",change:"मोबाइल नंबर बदलें",demo:"डेमो मोड: कोड 1234 डालें।",
+      skip:"बिना साइन इन के आगे बढ़ें",helpline:"हेल्पलाइन: 1800-123-4567",
+      badMobile:"6, 7, 8 या 9 से शुरू होने वाला सही 10 अंकों का नंबर डालें।",
+      sent:"कोड भेज दिया गया।",badOtp:"कोड सही नहीं है। 1234 डालें।",ok:"साइन इन हो गया। होम पेज खुल रहा है..."},
+    te:{heroTitle:"ఇంటి నుంచే టోకెన్ తీసుకోండి. మీ వంతు దగ్గర పడినప్పుడే ఆఫీసుకు చేరుకోండి.",
+      heroText:"మీ మొబైల్ నంబర్‌తో సైన్ ఇన్ చేయండి. అలర్ట్‌లు ఈ నంబర్‌కే వస్తాయి.",
+      step1:"1. మొబైల్ నంబర్",step2:"2. కోడ్ నమోదు",signIn:"సైన్ ఇన్",
+      mobileHint:"మీ 10 అంకెల మొబైల్ నంబర్ నమోదు చేయండి.",mobileLabel:"మొబైల్ నంబర్",sendOtp:"OTP పంపండి",
+      otpTitle:"కోడ్ నమోదు చేయండి",otpHint:"4 అంకెల కోడ్ ఇక్కడికి పంపాము:",otpLabel:"4 అంకెల కోడ్",
+      verify:"ధృవీకరించి సైన్ ఇన్ చేయండి",change:"మొబైల్ నంబర్ మార్చండి",demo:"డెమో మోడ్: కోడ్ 1234 వాడండి.",
+      skip:"సైన్ ఇన్ లేకుండా కొనసాగండి",helpline:"హెల్ప్‌లైన్: 1800-123-4567",
+      badMobile:"6, 7, 8 లేదా 9తో మొదలయ్యే సరైన 10 అంకెల నంబర్ ఇవ్వండి.",
+      sent:"కోడ్ పంపబడింది.",badOtp:"కోడ్ సరిగా లేదు. 1234 ప్రయత్నించండి.",ok:"సైన్ ఇన్ అయింది. హోమ్ పేజీకి వెళ్తున్నాము..."}
+  };
+
+  var $ = function(id){return document.getElementById(id)};
+  var lang = "en";
+  try { lang = localStorage.getItem("queueless_lang") || "en"; } catch(e){}
+  if(!T[lang]) lang = "en";
+
+  function apply(){
+    document.documentElement.lang = lang;
+    $("lang").value = lang;
+    var nodes = document.querySelectorAll("[data-t]");
+    for(var i=0;i<nodes.length;i++){
+      var k = nodes[i].getAttribute("data-t");
+      if(T[lang][k]) nodes[i].textContent = T[lang][k];
+    }
+  }
+  function say(el, key, type){ el.textContent = T[lang][key] || ""; el.className = "msg " + (type||""); }
+
+  $("lang").addEventListener("change", function(){
+    lang = this.value;
+    try { localStorage.setItem("queueless_lang", lang); } catch(e){}
+    apply();
+  });
+
+  $("mobile").addEventListener("input", function(){ this.value = this.value.replace(/\D/g,"").slice(0,10); });
+  $("otp").addEventListener("input", function(){ this.value = this.value.replace(/\D/g,"").slice(0,4); });
+
+  function sendOtp(){
+    var m = $("mobile").value;
+    if(!/^[6-9]\d{9}$/.test(m)){ say($("msg1"),"badMobile","err"); $("mobile").focus(); return; }
+    $("msg1").textContent = "";
+    $("shownNum").textContent = "+91 " + m;
+    $("stepMobile").classList.add("hidden");
+    $("stepOtp").classList.remove("hidden");
+    $("s1").className = "done"; $("s2").className = "on";
+    say($("msg2"),"sent","ok");
+    $("otp").focus();
+  }
+
+  function verify(){
+    if($("otp").value !== "1234"){ say($("msg2"),"badOtp","err"); $("otp").focus(); return; }
+    try {
+      localStorage.setItem("queueless_user", JSON.stringify({mobile:$("mobile").value, signedInAt:Date.now()}));
+    } catch(e){}
+    say($("msg2"),"ok","ok");
+    setTimeout(function(){ window.location.href = "index.html"; }, 900);
+  }
+
+  $("sendBtn").addEventListener("click", sendOtp);
+  $("verifyBtn").addEventListener("click", verify);
+  $("backBtn").addEventListener("click", function(){
+    $("stepOtp").classList.add("hidden");
+    $("stepMobile").classList.remove("hidden");
+    $("s1").className = "on"; $("s2").className = "";
+    $("otp").value = ""; $("msg2").textContent = "";
+    $("mobile").focus();
+  });
+  $("mobile").addEventListener("keydown", function(e){ if(e.key==="Enter") sendOtp(); });
+  $("otp").addEventListener("keydown", function(e){ if(e.key==="Enter") verify(); });
+
+  apply();
+})();
+</script>
+<script src="queueless-extras.js"></script>
+</body>
+</html>
